@@ -1,5 +1,5 @@
 import unittest
-from spend_points import read_csv, cal_tot_balance, cal_result
+from spend_points import read_csv, val_records, cal_result
 
 
 TEST_CASE1 = {
@@ -16,12 +16,7 @@ TEST_CASE1 = {
         ("DANNON",-200,"2020-10-31T15:00:00Z"),
         ("MILLER COORS",10000,"2020-11-01T14:00:00Z"),
         ("DANNON",1000,"2020-11-02T14:00:00Z")
-    ],
-    "true_tot_balance": {
-        "DANNON": 1100,
-        "UNILEVER": 200,
-        "MILLER COORS": 10000
-    }
+    ]
 }
 
 class TestReadCSV(unittest.TestCase):
@@ -42,28 +37,25 @@ class TestReadCSV(unittest.TestCase):
         records = read_csv('test_csv/demo.csv')
         self.assertEqual(records, TEST_CASE1['true_records'])
 
-class TestCalBalance(unittest.TestCase):
+class TestValBalance(unittest.TestCase):
 
     def test_violate_rule(self):
-        with self.assertRaises(ValueError):
-            cal_tot_balance([("DANNON",-200,"2020-10-31T15:00:00Z")])
-
-    def test_balance(self):
-        balance = cal_tot_balance(TEST_CASE1['true_records'])
-        self.assertEqual(balance, TEST_CASE1['true_tot_balance'])
+        correct = val_records([("DANNON",-200,"2020-10-31T15:00:00Z")])
+        self.assertEqual(correct, False)
+        correct = val_records(TEST_CASE1["true_sorted_records"])
+        self.assertEqual(correct, True)
+        
 
 class TestCalResult(unittest.TestCase):
-    
+
     def test_unenough_point(self):
         remain, _ = cal_result(
             TEST_CASE1["true_sorted_records"],
-            TEST_CASE1["true_tot_balance"],
             spend=11300
         )
         self.assertLessEqual(0, remain)
         remain, _ = cal_result(
             TEST_CASE1["true_sorted_records"],
-            TEST_CASE1["true_tot_balance"],
             spend=15000
         )
         self.assertLessEqual(0, remain)
@@ -71,7 +63,6 @@ class TestCalResult(unittest.TestCase):
     def test_enough_point(self):
         remain, result = cal_result(
             TEST_CASE1["true_sorted_records"],
-            TEST_CASE1["true_tot_balance"],
             spend=5000
         )
         self.assertEqual(remain, 0)

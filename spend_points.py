@@ -1,12 +1,19 @@
 import sys
 import csv
 import traceback
-from typing import Dict, List, Tuple
+from typing import List, Tuple
+from collections import defaultdict
 
 CSV_FILEPATH = "test_csv/demo.csv"
 
-def read_csv(file_path):
+def read_csv(file_path: str):
     """
+    Read CSV file
+    
+    Args:
+        file_path: file path to the csv file
+    Return:
+        records: list of record, which is a tuple of payer(str), points(int), timestamp(str)
     Raise:
         TypeError for wrong header name,
         TypeError for wrong data,
@@ -27,32 +34,38 @@ def read_csv(file_path):
             row_idx += 1
     return records
 
-def cal_tot_balance(records: List[Tuple]):
+def val_records(records: List[Tuple]):
     """
-    Calculate the total balance of each payer. Make sure that their balance would not less than 0 in each timestamp.
+    Examine the balance of each payer at every timestamp. Make sure that their balance would not less than 0.
     
     Args: 
-        records: list of record, which is a tuple of payer(str), points(int), timestamp(str)
+        records: list of record
     Return:
-        balance: total balance of each payer
-    Raise:
-        ValueError: raise error when the rule is violated in some timestamp
+        bool
     """
-    balance: Dict[str: int] = {}
+    balance = defaultdict(lambda: 0)
     for record in records:
         payer = record[0]
         points = record[1]
-        if payer not in balance:
-            balance[payer] = 0
         balance[payer] += points
         if balance[payer] < 0:
-            raise ValueError('This CSV records violate the rule')
-    return balance
+            return False
+    return True
 
-def cal_result(records: List[Tuple], balance: Dict[str, int], spend: int):
+def cal_result(records: List[Tuple], spend: int):
     """
-    Calculate the result after spending the point
+    Calculate the result after spending the points
+    Args:
+        records: list of record
+        spend: amount of points
     """
+
+    balance = defaultdict(lambda: 0)
+    for record in records:
+        payer = record[0]
+        points = record[1]
+        balance[payer] += points
+
     remain = spend
     for record in records:
         payer, points = record[0], record[1]
@@ -63,7 +76,7 @@ def cal_result(records: List[Tuple], balance: Dict[str, int], spend: int):
             balance[payer] -= remain 
             remain = 0
             break
-    return remain, balance
+    return remain, dict(balance)
 
 def main(spend: int):
 
@@ -75,10 +88,12 @@ def main(spend: int):
         records.sort(key=lambda r: r[2])
         
         # Calculate the total balance
-        balance = cal_tot_balance(records)
+        correct = val_records(records)
+        if not correct:
+            raise ValueError('This CSV records violate the rule')
         
         # Calculate the result
-        remain, result = cal_result(records, balance, spend)
+        remain, result = cal_result(records, spend)
 
         if remain != 0:
             print('Unable to complete the task, cause you dont have enough points')
