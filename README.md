@@ -17,7 +17,7 @@ python3 spend_points_test.py
 To my understanding, negative points in the CSV file means the amount of points from specific payer the user spend. Thus, we should make sure that balance of each payer should not less than 0 at any timestamp. 
 ```
 # My understanding
-"DANNON",1000,"2020-11-02T14:00:00Z" # The user got 1000 points from DANNON
+"DANNON", 1000, "2020-11-02T14:00:00Z" # The user got 1000 points from DANNON
 "DANNON", -200, "2020-11-02T14:00:00Z" # The user spend 200 points that comes from DANNON
 ```
 ### Flow
