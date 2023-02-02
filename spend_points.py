@@ -6,6 +6,7 @@ from collections import defaultdict
 
 CSV_FILEPATH = "test_csv/demo.csv"
 
+
 def read_csv(file_path: str):
     """
     Read CSV file
@@ -35,6 +36,7 @@ def read_csv(file_path: str):
             row_idx += 1
     return records
 
+
 def val_records(records: List[Tuple]):
     """
     Examine the balance of each payer at every timestamp. Make sure that their balance would not less than 0.
@@ -53,6 +55,7 @@ def val_records(records: List[Tuple]):
         if balance[payer] < 0:
             return False
     return True
+
 
 def cal_result(records: List[Tuple], spend: int):
     """
@@ -80,6 +83,7 @@ def cal_result(records: List[Tuple], spend: int):
             break
     return remain, dict(balance)
 
+
 def main(spend: int):
     try:
         # Read CSV
@@ -104,12 +108,11 @@ def main(spend: int):
     except Exception:
         traceback.print_exc()
 
+
 if __name__ == "__main__":
     # Check the input format
     if len(sys.argv) != 2:
-        exit(
-            "Wrong input format, [format: python3 spend_points.py <#point that you want to spend>]"
-        )
+        exit("Wrong input format, [format: python3 spend_points.py <#point that you want to spend>]")
     if int(sys.argv[1]) < 0:
         exit("We do not expect a spend less than 0")
 
