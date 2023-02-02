@@ -87,7 +87,7 @@ def main(spend: int):
         # Sort the CSV based on timestamp
         records.sort(key=lambda r: r[2])
         
-        # Calculate the total balance
+        # Validate the records
         correct = val_records(records)
         if not correct:
             raise ValueError('This CSV records violate the rule')
