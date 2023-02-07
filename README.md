@@ -38,6 +38,8 @@ This simple program contains several steps.
 3. Calculate the result
 
 ```
+# Preprocess
+# sort -> process records with negative points
 # Before preprocess
 "DANNON", -100, "2020-11-02T14:00:00Z"
 "DANNON", 200, "2020-11-01T14:00:00Z"
