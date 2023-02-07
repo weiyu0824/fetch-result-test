@@ -125,7 +125,7 @@ def main(spend: int):
 
         # Preprocess the records
         records = preprocess_records(records)
-        
+
         # Calculate the result
         remain, result = cal_result(records, spend)
 
@@ -148,5 +148,5 @@ if __name__ == "__main__":
         exit("The argument has wrong format")
     if spend < 0:
         exit("We do not expect a spend less than 0")
-    print(spend)
+    
     main(spend)
