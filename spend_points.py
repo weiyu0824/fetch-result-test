@@ -4,7 +4,7 @@ import traceback
 from typing import List, Tuple
 from collections import defaultdict
 
-CSV_FILEPATH = "test_csv/demo2.csv"
+CSV_FILEPATH = "test_csv/demo3.csv"
 
 
 def read_csv(file_path: str):
@@ -68,7 +68,7 @@ def preprocess_records(records: List[Tuple]):
 
                 # find points that comes from this 'payer'
                 if prev_payer == payer:
-                    if prev_points >= points:
+                    if prev_points >= points_needed_sent:
                         prev_points = prev_points - points_needed_sent
                         points_needed_sent = 0
                     else:
@@ -122,10 +122,10 @@ def main(spend: int):
     try:
         # Read CSV
         records = read_csv(CSV_FILEPATH)
-
+        print(records)
         # Preprocess the records
         records = preprocess_records(records)
-
+        print(records)
         # Calculate the result
         remain, result = cal_result(records, spend)
 
