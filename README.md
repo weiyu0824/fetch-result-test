@@ -20,6 +20,16 @@ To my understanding, negative points in the CSV file means the amount of points 
 "DANNON", 1000, "2020-11-02T14:00:00Z" # The user got 1000 points from DANNON
 "DANNON", -200, "2020-11-02T14:00:00Z" # The user spend 200 points that comes from DANNON
 ```
+
+```
+# Good example
+"DANNON", 1000, "2020-11-02T14:00:00Z"
+"DANNON", -200, "2020-11-02T14:00:00Z"
+
+# Bad example
+"DANNON", 100, "2020-11-02T14:00:00Z"
+"DANNON", -200, "2020-11-02T14:00:00Z"
+```
 ### Flow
 This simple program contains several steps.
 1. Read the CSV file
