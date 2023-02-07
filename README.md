@@ -14,7 +14,7 @@ python3 spend_points_test.py
 
 ## Design
 ### Logic
-To my understanding, negative points in the CSV file means the amount of points from specific payer the user spend. Thus, we should make sure that balance of each payer should not less than 0 at any timestamp. 
+To my understanding, those records with negative points in the CSV file means the user spend that amount of points from the payer. Thus, we should make sure that the user has enough points from that payer when he/she is about to spend points. 
 ```
 # My understanding
 "DANNON", 1000, "2020-11-02T14:00:00Z" # The user got 1000 points from DANNON
@@ -30,9 +30,19 @@ To my understanding, negative points in the CSV file means the amount of points 
 "DANNON", 100, "2020-11-02T14:00:00Z"
 "DANNON", -200, "2020-11-02T14:00:00Z"
 ```
+
 ### Flow
 This simple program contains several steps.
 1. Read the CSV file
-2. Sort the records
-3. Validate the records
-4. Calculate the result
+2. Preprocess the records
+3. Calculate the result
+
+```
+# Before preprocess
+"DANNON", -100, "2020-11-02T14:00:00Z"
+"DANNON", 200, "2020-11-01T14:00:00Z"
+
+# After preprocess
+"DANNON", 100, "2020-11-01T14:00:00Z"
+"DANNON", 0, "2020-11-02T14:00:00Z"
+```
