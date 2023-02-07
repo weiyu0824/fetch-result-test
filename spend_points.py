@@ -40,8 +40,7 @@ def read_csv(file_path: str):
 def preprocess_records(records: List[Tuple]):
     """
     Sort the records based on timestamp
-    Examine the balance of each payer at every timestamp. Make sure that their balance would not less than 0.
-    Preprocess the records by spending all the negative points in the records.
+    Preprocess the records by spending all the negative points in the records
 
     Args:
         records: list of record
