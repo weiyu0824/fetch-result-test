@@ -4,7 +4,7 @@ import traceback
 from typing import List, Tuple
 from collections import defaultdict
 
-CSV_FILEPATH = "test_csv/demo3.csv"
+CSV_FILEPATH = "test_csv/demo.csv"
 
 
 def read_csv(file_path: str):
@@ -122,10 +122,10 @@ def main(spend: int):
     try:
         # Read CSV
         records = read_csv(CSV_FILEPATH)
-        print(records)
+
         # Preprocess the records
         records = preprocess_records(records)
-        print(records)
+        
         # Calculate the result
         remain, result = cal_result(records, spend)
 
@@ -142,7 +142,11 @@ if __name__ == "__main__":
     # Check the input format
     if len(sys.argv) != 2:
         exit("Wrong input format, [format: python3 spend_points.py <#point that you want to spend>]")
-    if int(sys.argv[1]) < 0:
+    try:
+        spend = int(sys.argv[1])
+    except Exception:
+        exit("The argument has wrong format")
+    if spend < 0:
         exit("We do not expect a spend less than 0")
-
-    main(int(sys.argv[1]))
+    print(spend)
+    main(spend)
